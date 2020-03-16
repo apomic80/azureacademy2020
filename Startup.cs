@@ -44,6 +44,13 @@ namespace azure_academy
                     Configuration["Blob_ContainerName"]
                 )
             );
+
+            services.AddSession();
+            // Require Microsoft.Extensions.Caching.Redis
+            services.AddDistributedRedisCache(o =>
+            {
+                o.Configuration = Configuration.GetConnectionString("Redis");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +69,7 @@ namespace azure_academy
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseRouting();
 
