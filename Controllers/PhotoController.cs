@@ -1,7 +1,6 @@
-using System.IO;
 using System.Threading.Tasks;
 using azure_academy.Data;
-using Microsoft.AspNetCore.Hosting;
+using azure_academy.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +10,14 @@ namespace azure_academy.Controllers
     public class PhotoController : Controller
     {
         private readonly ApplicationDbContext ctx = null;
-        private readonly IWebHostEnvironment env = null;
+        private readonly IFileSystem fileSystem = null;
     
         public PhotoController(
             ApplicationDbContext ctx,
-            IWebHostEnvironment env)
+            IFileSystem fileSystem)
         {
             this.ctx = ctx;
-            this.env = env;
+            this.fileSystem = fileSystem;
         }
     
         public async Task<IActionResult> Index()
@@ -37,17 +36,15 @@ namespace azure_academy.Controllers
         {
             try
             {
-                var uploads = Path.Combine(env.WebRootPath, "uploads");
-                if(!Directory.Exists(uploads))
+                var uploads = "uploads";
+                if(!fileSystem.DirectoryExists(uploads))
                 {
-                    Directory.CreateDirectory(uploads);
+                    fileSystem.CreateDirectory(uploads);
                 }
                 if (file.Length > 0) {
-                    var filePath = Path.Combine(uploads, file.FileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create)) {
-                        await file.CopyToAsync(fileStream);
-                    }
-                    model.FileName = "/uploads/" + file.FileName;
+                    var filePath = fileSystem.PathCombine(uploads, file.FileName);
+                    await fileSystem.SaveFile(file, filePath);
+                    model.FileName = filePath;
                 }
     
                 ctx.Add(model);

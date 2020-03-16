@@ -12,6 +12,7 @@ using azure_academy.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using azure_academy.Shared;
 
 namespace azure_academy
 {
@@ -33,7 +34,16 @@ namespace azure_academy
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
-           services.AddRazorPages();
+            services.AddRazorPages();
+
+            // services.AddSingleton<IFileSystem, LocalFileSystem>();
+            services.AddSingleton<IFileSystem, AzureBlobFileSystem>(
+                s => new AzureBlobFileSystem(
+                    Configuration["Blob_StorageAccount"],
+                    Configuration["Blob_StorageKey"],
+                    Configuration["Blob_ContainerName"]
+                )
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
