@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6d2ce265-418b-4adf-aeec-cd7e61c5f9de/resourceGroups/azure-academy-paas/providers/Microsoft.Web/sites/azureacademypaas",
+    "appService.deploySubpath": "bin/Debug/netcoreapp3.1/publish"
+}

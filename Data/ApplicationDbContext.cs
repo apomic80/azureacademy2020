@@ -8,6 +8,8 @@ namespace azure_academy.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public DbSet<Photo> Photos { get; set; }
+        
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
