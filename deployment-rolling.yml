@@ -3,7 +3,12 @@ kind: Deployment
 metadata:
   name: demo-deployment
 spec:
-  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  replicas: 4
   template:
     metadata:
       labels:
