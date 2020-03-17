@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-azure-academy
+  labels:
+    name: demo
+    version: v1
+    stage: dev
+spec:
+  containers:
+  - name: demo-azure-academy
+    image: azureacademy.azurecr.io/demo:v1
+    ports:
+      - containerPort: 80

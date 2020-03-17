@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: demo-deployment
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        name: demo
+        version: v1
+        stage: dev
+    spec:
+      containers:
+      - name: demo-azure-academy
+        image: azureacademy.azurecr.io/demo:v1
